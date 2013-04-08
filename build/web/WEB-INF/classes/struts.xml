@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.configuration.xml.reload" value="true" />
+  
+    <package name="struts-interceptores" extends="struts-default">
+        
+        <interceptors>
+            
+            <interceptor name="saludo" class="com.javatutoriales.interceptores.interceptores.InterceptorSaludo" />
+            
+            <interceptor name="sesionValida" class="com.javatutoriales.interceptores.interceptores.InterceptorAcceso" />
+            
+            <interceptor-stack name="defaultTimerStack">
+                <interceptor-ref name="sesionValida">
+                    <param name="actionsPublicos">login,publico</param>
+                </interceptor-ref>  
+                <interceptor-ref name="fileUpload">
+                    <param name="allowedTypes">image/png</param>
+                </interceptor-ref>
+                <interceptor-ref name="saludo" />
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="timer" />
+                <interceptor-ref name="logger" />
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="defaultTimerStack" />
+        
+        <global-results>
+            <result name="login">/login.jsp</result>
+        </global-results>
+        
+        
+        <action name="carga-archivo" class="com.javatutoriales.interceptores.actions.CargaArchivo">
+        
+<!--    Interceptores de la primer parte del tutorial        
+        <interceptor-ref name="timer" />
+            <interceptor-ref name="logger" />
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">image/png,image/jpeg</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+-->
+            
+<!--    Interceptores de la segunda parte del tutorial
+    <interceptor-ref name="defaultTimerStack" />
+-->
+            
+
+            <result>/parametros/resultado.jsp</result>
+            <result name="input">/parametros/index.jsp</result>
+        </action>
+        
+        <action name="publico">
+            <result>/publica.jsp</result>
+        </action>
+        
+        <action name="protegido">
+            <result>/protegida.jsp</result>
+        </action>
+        
+        <action name="login" class="com.javatutoriales.interceptores.actions.LoginAction">
+            <result>/menu.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+    </package>
+</struts>
